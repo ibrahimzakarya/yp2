@@ -30,6 +30,7 @@ final class UserController {
         let passwordMW = PasswordAuthenticationMiddleware(User.self)
         let authRoute = drop.grouped([sessionMW, persistMW, passwordMW])
         
+        
         authRoute.get("user", "profile", handler: self.getProfileView)
         authRoute.post("user", "edit", handler: self.editUser)
         authRoute.get("user", "edit", ":id", handler: self.getEditView)
