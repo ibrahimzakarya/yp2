@@ -17,6 +17,7 @@ final class PlaceController {
         placeGroup.get("add", handler: self.getAddPlaceView)
         placeGroup.post("edit", ":id", handler: self.editPlace)
         placeGroup.get("edit", ":id", handler: self.getEditView)
+        placeGroup.get("add", handler: self.getAddPlaceView)
     }
     
     func getPlacesView(_ req: Request) throws -> ResponseRepresentable  {

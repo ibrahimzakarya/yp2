@@ -1,48 +1,100 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Basic Auth</title>
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body class="container">
-	#embed("header")
-	<div class="row">
-		<div class="col-lg-12 col-lg-10">
-			<h2>Places</h2>
-			<div class="panel panel-default">
-
-				<table class="table">
-					<th class="success">ID</th>
-					<th class="success">Place Name</th>
-					<th class="success">Address</th>
-					<th class="success">Phone</th>
-					<th class="success">Update</th>
-					<th class="success">delete</th>
-					#loop(places, "place") {
-					<tr>
-						<td>#(place.id)</td>
-						<td>#(place.name)</td>
-						<td>#(place.address)</td>
-						<td>#(place.phone)</td>
-						<td>
-							<form method="GET" action="edit/#(place.id)">
-								<button class="btn btn-primary" type="submit" aria-label="glyphicon glyphicon-pencil" value="Delete" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </button>
-							</form>
-						</td>
-						<td>
-							<form method="POST" action="delete/#(place.id)">
-								<button class="btn btn-danger" type="submit" aria-label="glyphicon glyphicon-trash" value="Delete" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
-							</form>
-						</td>
-					</tr>
-				}
-			</table>
-		</div>
-	</div>
-</div>
-</body>
-
+    <head>
+        <title>Basic Auth</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+            <link rel="stylesheet" type="text/css" href="style.css">
+                <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+                <style type="text/css"></style>
+                </head>
+    
+    <body class="container">
+        #embed("header")
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Edit Place:</h2>
+                <form id="user_form" method="POST" action="/place/edit/#(place.id)">
+                    <div class="col-lg-4">
+                        <label for="name">Place Name</label>
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" value="#(place.name)" required>
+                                </div>
+                        <label for="address">Address</label>
+                        <div class="form-group">
+                            <input type="text" name="address" class="form-control" value="#(place.address)" required>
+                                </div>
+                        <label for="phone">Phone</label>
+                        <div class="form-group">
+                            <input type="number" name="phone" class="form-control" value="#(place.phone)" required>
+                                </div>
+                        <label for="mobile">Mobile</label>
+                        <div class="form-group">
+                            <input type="number" name="mobile" class="form-control" value="#(place.mobile)">
+                                </div>
+                        <label for="isactive">Is Active</label>
+                        <div class="form-group">
+                            #equal(is_active, "0") {
+                            <input type="checkbox" id="isactive">
+                                } ##else() {
+                                <input type="checkbox" id="isactive" checked>
+                                    }
+                                    <input type="hidden" name="is_active" id="is_active">
+                                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-4">
+                        <label for="open_time">Open Time</label>
+                        <div class="form-group">
+                            <input type="time" name="open_time" class="form-control" value="#(place.openTime)" >
+                                </div>
+                        <label for="close_time">Close Time</label>
+                        <div class="form-group">
+                            <input type="time" name="close_time" class="form-control" value="#(place.closeTime)" >
+                                </div>
+                        <label for="details">Details</label>
+                        <div class="form-group">
+                            <input type="text" name="details" class="form-control" value="#(place.details)" >
+                                </div>
+                        <label for="website">WebSite</label>
+                        <div class="form-group">
+                            <input type="text" name="website" class="form-control" value="#(place.website)">
+                                </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                </form>
+                <div id="googleMap" class="" style="width:40%;height:250px;"></div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var isActiveHiddenTag = document.getElementById("is_active");
+            #equal(is_active, "0") {
+                isActiveHiddenTag.setAttribute('value',"0");
+            } ##else() {
+                isActiveHiddenTag.setAttribute('value',"1");
+            }
+        
+        document.getElementById("isactive").onchange = function() {
+            if (document.getElementById("isactive").checked) {
+                isActiveHiddenTag.setAttribute('value',"1");
+            } else {
+                isActiveHiddenTag.setAttribute('value',"0");
+            }
+        }
+        function myMap() {
+            var mapProp= {
+                center:new google.maps.LatLng(51.508742,-0.120850),
+                zoom:5,
+            };
+            var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+        }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_sgLJKaWW9M_lesTNC34iQPxH9UJT8fc&callback=myMap"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </body>
 </html>
 
