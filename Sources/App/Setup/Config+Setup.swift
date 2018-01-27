@@ -17,5 +17,10 @@ extension Config {
   /// schemas prepared before the app boots
   private func setupPreparations() throws {
     preparations.append(User.self)
+    preparations.append(Place.self)
+    preparations.append(Comment.self)
+    preparations.append(Rating.self)
+    preparations.append(Message.self)
+
   }
 }
