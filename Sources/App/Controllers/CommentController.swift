@@ -14,11 +14,7 @@ final class CommentController {
     }
     
     func addRoutes(to drop: Droplet) {
-        let commentGroup = drop.grouped("comment")
-        commentGroup.get("all", handler: self.getCommentsView)
-        commentGroup.post("create", handler: self.addComment)
-        commentGroup.post("delete", ":id", handler: self.deleteComment)
-        commentGroup.get(":place_id", handler: self.getPlaceComments)
+        
         
     }
     
