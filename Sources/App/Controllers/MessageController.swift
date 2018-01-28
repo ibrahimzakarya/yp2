@@ -13,9 +13,7 @@ final class MessageController {
     }
     
     func addRoutes(to drop: Droplet) {
-        let messageGroup = drop.grouped("message")
-        messageGroup.post("send", handler: self.sendMessage)
-        messageGroup.get("all", handler: self.getMessagesView)
+        
     }
     
     func sendMessage(_ req: Request) throws -> ResponseRepresentable {

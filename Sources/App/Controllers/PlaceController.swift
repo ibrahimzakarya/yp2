@@ -1,4 +1,5 @@
 import AuthProvider
+import Foundation
 
 final class PlaceController {
     let drop: Droplet
@@ -8,16 +9,7 @@ final class PlaceController {
     }
     
     func addRoutes(to drop: Droplet) {
-        let placeGroup = drop.grouped("place")
-        placeGroup.post("all", handler: self.getAllPlaces)
-        placeGroup.get("all", handler: self.getPlacesView)
-        placeGroup.get(":id", handler: self.getPlaceInfo)
-        placeGroup.get("search", handler: self.searchForPlace)
-        placeGroup.post("add", handler: self.addPlace)
-        placeGroup.get("add", handler: self.getAddPlaceView)
-        placeGroup.post("edit", ":id", handler: self.editPlace)
-        placeGroup.get("edit", ":id", handler: self.getEditView)
-        placeGroup.get("add", handler: self.getAddPlaceView)
+        
     }
     
     func getPlacesView(_ req: Request) throws -> ResponseRepresentable  {
@@ -64,10 +56,11 @@ final class PlaceController {
         }
         let logo = req.data["logo"]?.string
         let details = req.data["details"]?.string
-        let openTime = req.data["openTime"]?.date
-        let closeTime = req.data["cloasTime"]?.date
+        let openTime = req.data["open_time"]?.string
+        let closeTime = req.data["close_time"]?.string
         let website = req.data["website"]?.string
         let mobile = req.data["mobile"]?.string
+        
         
         let place = Place(name: placeName, longitude: longitude, latitude: latitude, address: placeAddress, phone: phone, mobile: mobile, rating: 0.0, openTime: openTime, closeTime: closeTime, details: details, website: website, logo: logo)
         
@@ -78,7 +71,7 @@ final class PlaceController {
             print("faild to save place")
             return Response(status: .badRequest)
         }
-        return Response(status: .ok)
+        return Response(redirect: "/place/all")
     }
     
     func editPlace(_ req: Request) throws -> ResponseRepresentable{
@@ -98,8 +91,8 @@ final class PlaceController {
         }
         let logo = req.data["logo"]?.string
         let details = req.data["details"]?.string
-        let openTime = req.data["openTime"]?.date
-        let closeTime = req.data["cloasTime"]?.date
+        let openTime = req.data["open_time"]?.string
+        let closeTime = req.data["close_time"]?.string
         let website = req.data["website"]?.string
         let mobile = req.data["mobile"]?.string
         
@@ -116,7 +109,7 @@ final class PlaceController {
         place.mobile = mobile
         
         try place.save()
-        return Response(status: .ok)
+        return Response(redirect: "/place/all")
     }
     
     func deletePlace(_ req: Request) throws -> ResponseRepresentable {

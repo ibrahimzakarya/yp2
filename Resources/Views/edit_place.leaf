@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Basic Auth</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
-		<style type="text/css"></style>
+		<style type="text/css">
+			
+		</style>
 	</head>
-
 	<body class="container">
 		#embed("header")
 		<div class="row">
@@ -22,7 +21,8 @@
 						</div>
 						<label for="address">Address</label>
 						<div class="form-group">
-							<input type="text" name="address" class="form-control" value="#(place.address)" required>
+							<!-- <input type="text" name="address" class="form-control" value="#(place.address)" required> -->
+							<textarea name="address" class="form-control" required>#(place.address)</textarea>
 						</div>
 						<label for="phone">Phone</label>
 						<div class="form-group">
@@ -41,34 +41,41 @@
 							}
 							<input type="hidden" name="is_active" id="is_active">
 						</div>
+						<div class="form-group">
+							<button class="btn btn-primary" type="submit">Update</button>
+						</div>
 					</div>
-					<div class="col-lg-1"></div>
+					
 					<div class="col-lg-4">
+						<label for="website">WebSite</label>
+						<div class="form-group">
+							<input type="text" name="website" class="form-control" value="#(place.website)">
+						</div>
+						<label for="details">Details</label>
+						<div class="form-group">
+							<!-- <input type="text" name="details" class="form-control" value="#(place.details)" > -->
+							<textarea name="details" class="form-control">#(place.details)</textarea>
+						</div>
 						<label for="open_time">Open Time</label>
 						<div class="form-group">
 							<input type="time" name="open_time" class="form-control" value="#(place.openTime)" >
+							#(place.openTime)
+							#(place.name)
 						</div>
 						<label for="close_time">Close Time</label>
 						<div class="form-group">
 							<input type="time" name="close_time" class="form-control" value="#(place.closeTime)" >
 						</div>
-						<label for="details">Details</label>
-						<div class="form-group">
-							<input type="text" name="details" class="form-control" value="#(place.details)" >
-						</div>
-						<label for="website">WebSite</label>
-						<div class="form-group">
-							<input type="text" name="website" class="form-control" value="#(place.website)">
-						</div>
 					</div>
-					<div class="form-group">
-						<button class="btn btn-primary" type="submit">Update</button>
+					<div class="col-lg-4">
+						<label>Location on the map</label>
+						<div id="googleMap" class="" style="width:100%;height:290px;"></div>
+						<input type="hidden" name="longitude" id="longitude" value="#(place.longitude)">
+			                  <input type="hidden" name="latitude" id="latitude" value="#(place.latitude)">
 					</div>
 				</form>
-				<div id="googleMap" class="" style="width:40%;height:250px;"></div>
 			</div>
 		</div>
-		
 		<script type="text/javascript">		
 			var isActiveHiddenTag = document.getElementById("is_active");
 			#equal(is_active, "0") {
@@ -84,12 +91,37 @@
 					isActiveHiddenTag.setAttribute('value',"0");
 				}
 			}
+			var map;
+			var myCenter;
+			var marker;
+			var longitude = #(place.longitude);
+			var latitude = #(place.latitude);
 			function myMap() {
+				myCenter = new google.maps.LatLng(latitude, longitude);
 				var mapProp= {
-					center:new google.maps.LatLng(51.508742,-0.120850),
-					zoom:5,
+					center: myCenter,
+					zoom:10,
 				};
-				var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+				map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+				marker = new google.maps.Marker({
+						position: myCenter,
+						map: map
+					});
+				google.maps.event.addListener(map, 'click', function(event) {
+					placeMarker(event.latLng);
+				});
+			}
+			function placeMarker(location) {
+				document.getElementById("longitude").setAttribute('value', location.lng());
+				document.getElementById("latitude").setAttribute('value', location.lat());
+				if (!marker || !marker.setPosition) {
+					marker = new google.maps.Marker({
+						position: location,
+						map: map
+					});
+				} else {
+					marker.setPosition(location);
+				}
 			}
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_sgLJKaWW9M_lesTNC34iQPxH9UJT8fc&callback=myMap"></script>

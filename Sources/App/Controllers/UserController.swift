@@ -9,34 +9,7 @@ final class UserController {
     }
     
     func addRoutes(to drop: Droplet) {
-        let userGroup = drop.grouped("user")
-//        userGroup.get("user", "register", handler: self.getRegisterView)
-        userGroup.post("register", handler: self.addUser)
-        userGroup.get("login", handler: self.getLoginView)
-//        userGroup.get("edit", ":id", handler: self.getEditView)
-//        userGroup.post("edit", ":id", handler: self.editUser)
-//        userGroup.get("all", handler: self.getUsersView)
-//        userGroup.post("delete", ":id", handler: self.deleteUser)
         
-        let persistMW = PersistMiddleware(User.self)
-        let memory = MemorySessions()
-        let sessionMW = SessionsMiddleware(memory)
-        let loginRoute = drop.grouped([sessionMW, persistMW])
-    
-        loginRoute.post("login", handler: self.postLogin)
-        loginRoute.get("login", handler: self.getLoginView)
-        loginRoute.get("logout", handler: self.logout)
-	
-        let passwordMW = PasswordAuthenticationMiddleware(User.self)
-        let authRoute = drop.grouped([sessionMW, persistMW, passwordMW])
-        
-        
-        authRoute.get("user", "profile", handler: self.getProfileView)
-        authRoute.post("user", "edit", handler: self.editUser)
-        authRoute.get("user", "edit", ":id", handler: self.getEditView)
-        authRoute.post("user", "edit", ":id", handler: self.editUser)
-        authRoute.get("user", "all", handler: self.getUsersView)
-        authRoute.post("user", "delete", ":id", handler: self.deleteUser)
     }
     
 //    func getRegisterView(_ req: Request) throws -> ResponseRepresentable  {

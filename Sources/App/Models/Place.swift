@@ -11,14 +11,14 @@ final class Place: Model {
     var address: String
     var phone: String
     var mobile: String?
-    var openTime: Date?
-    var closeTime: Date?
+    var openTime: String?
+    var closeTime: String?
     var details: String?
     var website: String?
     var logo: String?
     var isActive: UInt8
     
-    init(name: String, longitude: Double, latitude: Double, address: String, phone: String, mobile: String?, rating:  Double, openTime: Date?, closeTime: Date?, details: String?, website: String?, logo: String?) {
+    init(name: String, longitude: Double, latitude: Double, address: String, phone: String, mobile: String?, rating:  Double, openTime: String?, closeTime: String?, details: String?, website: String?, logo: String?) {
         self.name = name
         self.longitude = longitude
         self.latitude = latitude
@@ -87,8 +87,8 @@ extension Place: Preparation {
             builder.string("details", optional: true)
             builder.string("website", optional: true)
             builder.string("logo", optional: true)
-            builder.date("open_time", optional: true)
-            builder.date("close_time", optional: true)
+            builder.string("open_time", optional: true)
+            builder.string("close_time", optional: true)
         }
     }
     
