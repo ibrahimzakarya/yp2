@@ -8,14 +8,6 @@ final class UserController {
         self.drop = drop
     }
     
-    func addRoutes(to drop: Droplet) {
-        
-    }
-    
-//    func getRegisterView(_ req: Request) throws -> ResponseRepresentable  {
-//        return try drop.view.make("register")
-//    }
-    
     func getLoginView(_ req: Request) throws -> ResponseRepresentable {
         return try drop.view.make("login")
     }
@@ -33,11 +25,11 @@ final class UserController {
         
         let isActive = String(user.isActive)
         let isAdmin = String(user.isAdmin)
-        return try drop.view.make("edit_user", ["user": try user.makeNode(in: nil), "is_active": isActive, "is_admin": isAdmin])
+        return try drop.view.make("edit_user", ["user": try user.makeNode(in: nil), "is_active": isActive, "is_admin": isAdmin, "usersActive": true])
     }
     
     func getProfileView(_ req: Request) throws -> ResponseRepresentable {
-
+        
         // returns user from session
         let user: User = try req.auth.assertAuthenticated()
         return try drop.view.make("profile", ["user": try user.makeNode(in: nil)])
@@ -62,7 +54,6 @@ final class UserController {
             else {
                 return "email already exists"
         }
-        
         let user = User(email: email, password: password, username: username, fullname: fullname)
         try user.save()
         
@@ -84,7 +75,7 @@ final class UserController {
         // persists user and creates a session cookie
         req.auth.authenticate(user)
         
-        return Response(redirect: "/profile")
+        return Response(redirect: "/home")
     }
     
     func logout(_ req: Request) throws -> ResponseRepresentable {
@@ -93,8 +84,7 @@ final class UserController {
     }
     
     func editUser(_ req: Request) throws -> ResponseRepresentable{
-//        let user: User = try req.auth.assertAuthenticated()
-        
+        //        let user: User = try req.auth.assertAuthenticated()
         //        guard let userId = req.parameters["id"]?.int else {
         //            return Response(status: .badRequest)
         //        }

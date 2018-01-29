@@ -28,7 +28,7 @@ final class PlaceController {
         guard let place = try Place.find(placeId) else { return Response(status: .badRequest) }
         
         let isActive = String(place.isActive)
-        return try drop.view.make("edit_place", ["place": try place.makeNode(in: nil), "is_active": isActive])
+        return try drop.view.make("edit_place", ["place": try place.makeNode(in: nil), "is_active": isActive, "placesActive": true])
     }
     
     func getPlaceInfo(_ req: Request) throws -> ResponseRepresentable {

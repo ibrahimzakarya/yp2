@@ -13,11 +13,6 @@ final class CommentController {
         self.drop = drop
     }
     
-    func addRoutes(to drop: Droplet) {
-        
-        
-    }
-    
     func getCommentsView(_ req: Request) throws -> ResponseRepresentable  {
         let comments = try Comment.all()
         return try drop.view.make("comments", ["commnets": comments.makeNode(in: nil), "commentsActive": true])
@@ -52,7 +47,6 @@ final class CommentController {
             return Response(status: .badRequest)
         }
         guard let place = try Place.find(placeId) else { return Response(status: .badRequest)}
-//        let placeComments =  try place.makeCommentsJSON()
         
         return try place.makeCommentsJSON()
     }

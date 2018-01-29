@@ -25,7 +25,7 @@ final class RatingController {
         guard let rating = req.data["rating"]?.double else {
             return Response(status: .badRequest)
         }
-        // check if the user rate this place before
+        // check if the user rate this place before and update current rating
         if let userRating = try user.ratings.filter("place_id", placeId).first() {
             userRating.rating = rating
             try userRating.save()
