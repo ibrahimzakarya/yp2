@@ -58,13 +58,12 @@
 						</div>
 						<label for="open_time">Open Time</label>
 						<div class="form-group">
-							<input type="time" name="open_time" class="form-control" value="#(place.openTime)" >
-							#(place.openTime)
-							#(place.name)
+							<input type="time" name="open_time" class="form-control" value="#(place.open_time)" >
+							
 						</div>
 						<label for="close_time">Close Time</label>
 						<div class="form-group">
-							<input type="time" name="close_time" class="form-control" value="#(place.closeTime)" >
+							<input type="time" name="close_time" class="form-control" value="#(place.close_time)" >
 						</div>
 					</div>
 					<div class="col-lg-4">

@@ -13,16 +13,17 @@ final class MessageController {
     }
     
     func sendMessage(_ req: Request) throws -> ResponseRepresentable {
-        guard let userId = req.data["user_id"]?.int else {
+//        guard let userId = req.data["user_id"]?.int else {
+//            return Response(status: .badRequest)
+//        }
+        let userId =  req.data["user_id"]?.int
+//        guard try User.find(userId) != nil else {
+//            return Response(status: .badRequest)
+//        }
+        guard let messageText = req.data["message"]?.string, let messageSubject = req.data["subject"]?.string, let userEmail = req.data["email"]?.string else {
             return Response(status: .badRequest)
         }
-        guard try User.find(userId) != nil else {
-            return Response(status: .badRequest)
-        }
-        guard let messageText = req.data["message"]?.string, let messageSubject = req.data["subject"]?.string else {
-            return Response(status: .badRequest)
-        }
-        let message = Message(text: messageText, userId: userId, subject: messageSubject)
+        let message = Message(text: messageText, userId: userId, subject: messageSubject, email: userEmail)
         try message.save()
         
         return Response(status: .ok)

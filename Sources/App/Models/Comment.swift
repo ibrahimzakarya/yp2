@@ -59,6 +59,7 @@ extension Comment: NodeRepresentable {
         var node = Node(context)
         try node.set("id", id)
         try node.set("text", text)
+        try node.set("created", createdAt)
         guard let user = try User.find(userId) else { return Node(context) }
         guard let place = try Place.find(placeId) else { return Node(context) }
         try node.set("user_fullname", user.fullname)

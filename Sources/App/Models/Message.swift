@@ -15,10 +15,12 @@ final class Message: Model {
     var storage = Storage()
     var text: String
     var subject: String
-    let userId: Int
+    var email: String
+    let userId: Int?
     
-    init(text: String, userId: Int, subject: String) {
+    init(text: String, userId: Int?, subject: String, email: String) {
         self.text = text
+        self.email = email
         self.userId = userId
         self.subject = subject
     }
@@ -28,12 +30,14 @@ final class Message: Model {
         try row.set("text", text)
         try row.set(User.foreignIdKey, userId)
         try row.set("subject", subject)
+        try row.set("email", email)
         return row
     }
     
     init(row: Row) throws {
         self.text = try row.get("text")
         self.subject = try row.get("subject")
+        self.email = try row.get("email")
         self.userId = try row.get(User.foreignIdKey)
     }
     
@@ -45,7 +49,8 @@ extension Message: Preparation {
             builder.id()
             builder.string("text")
             builder.string("subject")
-            builder.foreignId(for: User.self)
+            builder.string("email")
+            builder.foreignId(for: User.self, optional: true)
         }
     }
     
@@ -60,7 +65,10 @@ extension Message: NodeRepresentable {
         try node.set("id", id)
         try node.set("text", text)
         try node.set("subject", subject)
+        try node.set("email", email)
         try node.set("user_id", userId)
+        guard let user = try User.find(userId) else { return node }
+        try node.set("user_fullname", user.fullname)
         
         return node
     }

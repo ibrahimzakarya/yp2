@@ -28,6 +28,7 @@ extension Droplet {
         
         
         let messageController = MessageController(drop: self)
+        post("message", "send", handler: messageController.sendMessage)
         
         //setup authentication
         let persistMW = PersistMiddleware(User.self)
@@ -59,7 +60,7 @@ extension Droplet {
         authRoute.post("comment", "create", handler: commentController.addComment)
         // Messages views and operations
         authRoute.get("message", "all", handler: messageController.getMessagesView)
-        authRoute.post("message", "send", handler: messageController.sendMessage)
+//        authRoute.post("message", "send", handler: messageController.sendMessage)
 
         // Home view
         authRoute.get("home", handler: homeController.getHomeView)

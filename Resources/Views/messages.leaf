@@ -29,22 +29,18 @@
                         <th class="success">ID</th>
                         <th class="success">Subject</th>
                         <th class="success">Message</th>
-                        <th class="success">By</th>
-                        <th class="success">Update</th>
+                        <th class="success">Email</th>
+                        <th class="success">User</th>
                         <th class="success">delete</th>
                         #loop(messages, "message") {
                         <tr>
                             <td>#(message.id)</td>
                             <td class="text"><span>#(message.subject)</span></td>
                             <td>#(message.text)</td>
-                            <td>#(message.place_name)</td>
+                            <td>#(message.email)</td>
+                            <td>#(message.user_fullname)</td>
                             <td>
-                                <form method="GET" action="edit/#(commnet.id)">
-                                    <button class="btn btn-primary" type="submit" aria-label="glyphicon glyphicon-pencil" value="Delete" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form method="POST" action="delete/#(commnet.id)">
+                                <form method="POST" action="delete/#(message.id)">
                                     <button class="btn btn-danger" type="submit" aria-label="glyphicon glyphicon-trash" value="Delete" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
                                 </form>
                             </td>

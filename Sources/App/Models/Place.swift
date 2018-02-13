@@ -142,8 +142,12 @@ extension Place: JSONRepresentable {
         try json.set("id", id)
         try json.set("name", name)
         try json.set("address", address)
-        try json.set("rate", rating)
+        try json.set("rating", rating)
         try json.set("logo", logo)
+        try json.set("phone", phone)
+        try json.set("mobile", mobile)
+        try json.set("longitude", longitude)
+        try json.set("latitude", latitude)
         return json
     }
     
