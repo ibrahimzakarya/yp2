@@ -16,7 +16,7 @@ extension Droplet {
         let placeGroup = self.grouped("place")
         placeGroup.post("all", handler: placeController.getAllPlaces)
         placeGroup.get(":id", handler: placeController.getPlaceInfo)
-        placeGroup.get("search", handler: placeController.searchForPlace)
+        placeGroup.post("search", handler: placeController.searchForPlace)
         
         let commentController = CommentController(drop: self)
         let commentGroup = self.grouped("comment")
