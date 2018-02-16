@@ -10,7 +10,7 @@ final class User: Model {
   var fullname: String
   var isActive: UInt8
   var isAdmin: UInt8
-  var favorites: [Place]?
+//  var favorites: [Place]?
 
   init(email: String, password: String, username: String, fullname: String) {
     self.email = email
@@ -88,6 +88,12 @@ extension User {
 }
 
 extension User {
+    var favorites: Children<User, Favorite> {
+        return children()
+    }
+}
+
+extension User {
     var messages: Children<User, Message> {
         return children()
     }
@@ -105,6 +111,12 @@ extension User: JSONRepresentable {
         try json.set("id", id)
         try json.set("name", email)
         try json.set("username", username)
+        return json
+    }
+    
+    func makeFavoritesJSON() throws -> JSON {
+        var json = JSON()
+        try json.set("favorites", favorites.all())
         return json
     }
 }

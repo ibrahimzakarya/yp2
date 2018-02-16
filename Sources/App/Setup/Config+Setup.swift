@@ -21,6 +21,7 @@ extension Config {
     preparations.append(Comment.self)
     preparations.append(Rating.self)
     preparations.append(Message.self)
+    preparations.append(Favorite.self)
 
   }
 }

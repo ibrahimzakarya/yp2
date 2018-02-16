@@ -60,6 +60,13 @@ final class UserController {
         return Response(status: .ok)
     }
     
+    func addAdminUser() throws {
+        
+        let user = User(email: "admin@admin.com", password: "AdminPassword", username: "admin", fullname: "Admin")
+        user.isAdmin = 1
+        try user.save()
+    }
+    
     func postLogin(_ req: Request) throws -> ResponseRepresentable {
         guard
             let email = req.formURLEncoded?["email"]?.string,
@@ -67,6 +74,32 @@ final class UserController {
             else {
                 return "either email or password is missing"
         }
+        let credentials = Password(username: email, password: password)
+        
+        
+        // returns matching user (throws error if user doesn't exist)
+        let user = try User.authenticate(credentials)
+        
+        // persists user and creates a session cookie
+        req.auth.authenticate(user)
+        
+        return Response(redirect: "/home")
+    }
+    
+    func adminLogin(_ req: Request) throws -> ResponseRepresentable {
+        guard
+            let email = req.formURLEncoded?["email"]?.string,
+            let password = req.formURLEncoded?["password"]?.string
+            else {
+                return "either email or password is missing"
+        }
+        
+        let adminUser = try User.makeQuery().filter("email", .equals, email).first()
+        
+        if adminUser?.isAdmin == 0 {
+            return Response(status: .badRequest)
+        }
+        
         let credentials = Password(username: email, password: password)
         
         // returns matching user (throws error if user doesn't exist)
@@ -118,9 +151,52 @@ final class UserController {
         guard let userId = req.parameters["id"]?.int else {
             return Response(status: .badRequest)
         }
+        if userId == 1 {
+            return "You can't delete the main user"
+        }
         guard let user = try User.find(userId) else { return Response(status: .badRequest) }
         try user.delete()
         return Response(redirect: "/user/all")
+    }
+    
+    func getUserFavorite(_ req: Request) throws -> ResponseRepresentable {
+        guard let userId = req.parameters["user_id"]?.int else {
+            return Response(status: .badRequest)
+        }
+        guard let user = try User.find(userId) else { return Response(status: .badRequest)}
+        
+        return try user.makeFavoritesJSON()
+    }
+    
+    func addToFavorite(_ req: Request) throws -> ResponseRepresentable {
+        guard let userId = req.data["userId"]?.int, let placeId = req.data["placeId"]?.int else {
+            return Response(status: .badRequest)
+        }
+        guard let user = try User.find(userId), try Place.find(placeId) != nil else {
+            return Response(status: .badRequest)
+        }
+        if let _ = try user.favorites.filter("place_id", placeId).first() {
+            return "Already exist"//Response(status: .ok)
+        } else {
+            let favorite = Favorite(userId: userId, placeId: placeId)
+            try favorite.save()
+            
+            return Response(status: .ok)
+        }
+    }
+    
+    func removeFromFavorite(_ req: Request) throws -> ResponseRepresentable {
+        guard let userId = req.data["userId"]?.int, let placeId = req.data["placeId"]?.int else {
+            return Response(status: .badRequest)
+        }
+        guard let user = try User.find(userId), try Place.find(placeId) != nil else {
+            return Response(status: .badRequest)
+        }
+        if let userFav = try user.favorites.filter("place_id", placeId).first() {
+            try userFav.delete()
+            return Response(status: .ok)
+        }
+        return Response(status: .ok)
     }
     
 }

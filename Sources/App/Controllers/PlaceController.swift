@@ -118,7 +118,7 @@ final class PlaceController {
         }
         guard let place = try Place.find(placeId) else { return Response(status: .badRequest) }
         try place.delete()
-        return Response(status: .ok)
+        return Response(redirect: "/place/all")
     }
     
     func searchForPlace(_ req: Request) throws -> ResponseRepresentable {

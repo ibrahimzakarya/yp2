@@ -59,6 +59,10 @@
                     <div class="form-group">
                         <input type="time" name="close_time" class="form-control">
                     </div>
+                    <label for="classification">Classification</label>
+                    <div class="form-group">
+                        <input type="text" name="classification" class="form-control" required>
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <label>Location on the map</label>

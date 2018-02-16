@@ -19,7 +19,7 @@
 					<th class="success">Address</th>
 					<th class="success">Phone</th>
 					<th class="success">Update</th>
-					<th class="success">delete</th>
+					<th class="success">Delete</th>
 					#loop(places, "place") {
 					<tr>
 						<td>#(place.id)</td>

@@ -136,6 +136,12 @@ extension Place {
     }
 }
 
+extension Place {
+    var favorites: Children<Place, Favorite> {
+        return children()
+    }
+}
+
 extension Place: JSONRepresentable {
     func makeJSON() throws -> JSON {
         var json = JSON()

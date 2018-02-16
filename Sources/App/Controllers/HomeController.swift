@@ -8,14 +8,17 @@ final class HomeController {
   }
 
   func getHomeView(_ req: Request) throws -> ResponseRepresentable {
-//    do {
-//        let user: User = try req.auth.assertAuthenticated()
-//    } catch  {
-//        return Response(redirect: "/login")
-//    }
-//    
-////    let user: User = try req.auth.assertAuthenticated()
+
     
   	return try drop.view.make("home", ["homeActive": true])
   }
+    
+    func getLoginView(_ req: Request) throws -> ResponseRepresentable {
+        
+        return Response(redirect: "/login")
+    }
+    
+    func tryMyApp(_ req: Request) throws -> ResponseRepresentable {
+        return Response(redirect: "https://appetize.io/app/p4ey3btmt43mp34nwexyw2ttdc?device=iphone8plus&scale=75&orientation=portrait&osVersion=11.1")
+    }
 }

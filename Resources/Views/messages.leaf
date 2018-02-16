@@ -31,7 +31,6 @@
                         <th class="success">Message</th>
                         <th class="success">Email</th>
                         <th class="success">User</th>
-                        <th class="success">delete</th>
                         #loop(messages, "message") {
                         <tr>
                             <td>#(message.id)</td>
@@ -39,11 +38,7 @@
                             <td>#(message.text)</td>
                             <td>#(message.email)</td>
                             <td>#(message.user_fullname)</td>
-                            <td>
-                                <form method="POST" action="delete/#(message.id)">
-                                    <button class="btn btn-danger" type="submit" aria-label="glyphicon glyphicon-trash" value="Delete" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </button>
-                                </form>
-                            </td>
+                            
                         </tr>
                         }
                     </table>
