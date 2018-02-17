@@ -19,6 +19,6 @@ final class HomeController {
     }
     
     func tryMyApp(_ req: Request) throws -> ResponseRepresentable {
-        return Response(redirect: "https://appetize.io/app/uby1gqetbce6wvjtx5wf9r2pt0")
+        return Response(redirect: "https://appetize.io/app/ckkabjcmenn3mg7t1xac7710t8")
     }
 }

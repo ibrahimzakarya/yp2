@@ -49,15 +49,14 @@ final class UserController {
             else {
                 return "ether email or password is missing"
         }
-        guard
-            try User.makeQuery().filter("email", email).first() == nil
+        guard try User.makeQuery().filter("email", email).first() == nil
             else {
-                return "email already exists"
+                return Response(status: .badRequest, body: "email already exists")
         }
         let user = User(email: email, password: password, username: username, fullname: fullname)
         try user.save()
         
-        return Response(status: .ok)
+        return Response(status: .ok, body: try user.makeJSON())
     }
     
     func addAdminUser() throws {
@@ -83,7 +82,7 @@ final class UserController {
         // persists user and creates a session cookie
         req.auth.authenticate(user)
         
-        return Response(status: .ok)//redirect: "/home")
+        return Response(status: .ok, body: try user.makeJSON())//redirect: "/home")
     }
     
     func adminLogin(_ req: Request) throws -> ResponseRepresentable {
