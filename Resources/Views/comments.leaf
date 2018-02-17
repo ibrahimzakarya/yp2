@@ -29,7 +29,7 @@
                         <th class="success">Comment Text</th>
                         <th class="success">By</th>
                         <th class="success">Place</th>
-                        <th class="success">Update</th>
+                        <th class="success">Delete</th>
                         #loop(commnets, "commnet") {
                         <tr>
                             <td>#(commnet.id)</td>

@@ -16,6 +16,7 @@ extension Droplet {
         userGroup.post("favorite", "add", handler: userController.addToFavorite)
         userGroup.post(":user_id", "favorites", handler: userController.getUserFavorite)
         userGroup.post("favorite", "delete", handler: userController.removeFromFavorite)
+        userGroup.post("login", handler: userController.postLogin)
         
         let placeController = PlaceController(drop: self)
         let placeGroup = self.grouped("place")
@@ -37,7 +38,7 @@ extension Droplet {
         let memory = MemorySessions()
         let sessionMW = SessionsMiddleware(memory)
         let loginRoute = self.grouped([sessionMW, persistMW])
-        loginRoute.post("login", handler: userController.postLogin)
+        loginRoute.post("login", handler: userController.adminLogin)
         loginRoute.get("login", handler: userController.getLoginView)
         loginRoute.get("logout", handler: userController.logout)
         let passwordMW = PasswordAuthenticationMiddleware(User.self)

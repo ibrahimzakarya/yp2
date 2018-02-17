@@ -19,6 +19,6 @@ final class HomeController {
     }
     
     func tryMyApp(_ req: Request) throws -> ResponseRepresentable {
-        return Response(redirect: "https://appetize.io/app/p4ey3btmt43mp34nwexyw2ttdc?device=iphone8plus&scale=75&orientation=portrait&osVersion=11.1")
+        return Response(redirect: "https://appetize.io/app/uby1gqetbce6wvjtx5wf9r2pt0")
     }
 }

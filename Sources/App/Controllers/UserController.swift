@@ -69,8 +69,8 @@ final class UserController {
     
     func postLogin(_ req: Request) throws -> ResponseRepresentable {
         guard
-            let email = req.formURLEncoded?["email"]?.string,
-            let password = req.formURLEncoded?["password"]?.string
+            let email = req.data["email"]?.string,
+            let password = req.data["password"]?.string
             else {
                 return "either email or password is missing"
         }
@@ -83,13 +83,13 @@ final class UserController {
         // persists user and creates a session cookie
         req.auth.authenticate(user)
         
-        return Response(redirect: "/home")
+        return Response(status: .ok)//redirect: "/home")
     }
     
     func adminLogin(_ req: Request) throws -> ResponseRepresentable {
         guard
-            let email = req.formURLEncoded?["email"]?.string,
-            let password = req.formURLEncoded?["password"]?.string
+            let email = req.data["email"]?.string,
+            let password = req.data["password"]?.string
             else {
                 return "either email or password is missing"
         }
@@ -117,11 +117,6 @@ final class UserController {
     }
     
     func editUser(_ req: Request) throws -> ResponseRepresentable{
-        //        let user: User = try req.auth.assertAuthenticated()
-        //        guard let userId = req.parameters["id"]?.int else {
-        //            return Response(status: .badRequest)
-        //        }
-        //        guard let user = try User.find(userId) else { return Response(status: .badRequest) }
         guard let userId = req.parameters["id"]?.int else {
             return Response(status: .badRequest)
         }
