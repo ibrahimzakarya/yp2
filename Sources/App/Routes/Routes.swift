@@ -68,7 +68,7 @@ extension Droplet {
 
         // Home view
         authRoute.get("home", handler: homeController.getHomeView)
-        get("", handler: homeController.getHomeView)
+        get("", handler: userController.getLoginView)
 
         get("trymyapp", handler: homeController.tryMyApp)
 

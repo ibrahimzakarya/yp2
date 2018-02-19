@@ -10,6 +10,7 @@ final class Place: Model {
     var rating: Double
     var address: String
     var phone: String
+    var classification: String
     var mobile: String?
     var openTime: String?
     var closeTime: String?
@@ -18,12 +19,13 @@ final class Place: Model {
     var logo: String?
     var isActive: UInt8
     
-    init(name: String, longitude: Double, latitude: Double, address: String, phone: String, mobile: String?, rating:  Double, openTime: String?, closeTime: String?, details: String?, website: String?, logo: String?) {
+    init(name: String, longitude: Double, latitude: Double, address: String, phone: String, classification: String, mobile: String?, rating:  Double, openTime: String?, closeTime: String?, details: String?, website: String?, logo: String?) {
         self.name = name
         self.longitude = longitude
         self.latitude = latitude
         self.rating = rating
         self.address = address
+        self.classification = classification
         self.phone = phone
         self.mobile = mobile
         self.closeTime = closeTime
@@ -42,6 +44,7 @@ final class Place: Model {
         try row.set("rating", rating)
         try row.set("is_active", isActive)
         try row.set("address", address)
+        try row.set("classification", classification)
         try row.set("phone", phone)
         try row.set("mobile", mobile)
         try row.set("open_time", openTime)
@@ -59,6 +62,7 @@ final class Place: Model {
         self.rating = try row.get("rating")
         self.isActive = try row.get("is_active")
         self.address = try row.get("address")
+        self.classification = try row.get("classification")
         self.phone = try row.get("phone")
         self.mobile = try row.get("mobile")
         self.openTime = try row.get("open_time")
@@ -82,6 +86,7 @@ extension Place: Preparation {
             builder.double("rating")
             builder.int("is_active")
             builder.string("address")
+            builder.string("classification")
             builder.string("phone")
             builder.string("mobile", optional: true)
             builder.string("details", optional: true)
@@ -108,6 +113,7 @@ extension Place: NodeRepresentable {
         try node.set("latitude", latitude)
         try node.set("rating", rating)
         try node.set("address", address)
+        try node.set("classification", classification)
         try node.set("is_active", isActive)
         try node.set("phone", phone)
         try node.set("mobile", mobile)
@@ -162,6 +168,7 @@ extension Place: JSONRepresentable {
         try json.set("id", id)
         try json.set("name", name)
         try json.set("address", address)
+        try json.set("classification", classification)
         try json.set("rate", rating)
         try json.set("open_time", openTime)
         try json.set("close_time", closeTime)

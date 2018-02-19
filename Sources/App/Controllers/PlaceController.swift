@@ -40,7 +40,7 @@ final class PlaceController {
     }
     
     func getAllPlaces(_ req: Request) throws -> ResponseRepresentable {
-        let list = try Place.all()
+        let list = try Place.makeQuery().filter("is_active", .equals, 1).all()
         return try list.makeJSON()
     }
     
@@ -50,7 +50,8 @@ final class PlaceController {
             let placeAddress = req.data["address"]?.string,
             let longitude = req.data["longitude"]?.double,
             let latitude = req.data["latitude"]?.double,
-            let phone = req.data["phone"]?.string
+            let phone = req.data["phone"]?.string,
+            let classification = req.data["classification"]?.string
         else {
             return Response(status: .badGateway)
         }
@@ -62,7 +63,7 @@ final class PlaceController {
         let mobile = req.data["mobile"]?.string
         
         
-        let place = Place(name: placeName, longitude: longitude, latitude: latitude, address: placeAddress, phone: phone, mobile: mobile, rating: 0.0, openTime: openTime, closeTime: closeTime, details: details, website: website, logo: logo)
+        let place = Place(name: placeName, longitude: longitude, latitude: latitude, address: placeAddress, phone: phone, classification: classification, mobile: mobile, rating: 0.0, openTime: openTime, closeTime: closeTime, details: details, website: website, logo: logo)
         
         do {
             try place.save()
@@ -85,7 +86,9 @@ final class PlaceController {
             let placeAddress = req.data["address"]?.string,
             let longitude = req.data["longitude"]?.double,
             let latitude = req.data["latitude"]?.double,
-            let phone = req.data["phone"]?.string
+            let isActive = req.data["is_active"]?.uint,
+            let phone = req.data["phone"]?.string,
+            let classification = req.data["classification"]?.string
         else {
             return Response(status: .badGateway)
         }
@@ -98,6 +101,7 @@ final class PlaceController {
         
         place.name = placeName
         place.address = placeAddress
+        place.classification = classification
         place.longitude = longitude
         place.latitude = latitude
         place.phone = phone
@@ -107,6 +111,7 @@ final class PlaceController {
         place.closeTime = closeTime
         place.website = website
         place.mobile = mobile
+        place.isActive = UInt8(isActive)
         
         try place.save()
         return Response(redirect: "/place/all")
