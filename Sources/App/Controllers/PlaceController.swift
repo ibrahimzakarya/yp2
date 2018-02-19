@@ -132,8 +132,13 @@ final class PlaceController {
         let places = try Place
             .makeQuery()
             .filter("name", .contains, text)
+            .and { andGroup in
+                try andGroup.filter("is_active", .equals, 1)
+            }
             .all()
         return try places.makeJSON()
+        
+        
     }
     
     func getPlaceLocation(_ req: Request) throws -> ResponseRepresentable {
